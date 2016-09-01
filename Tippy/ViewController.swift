@@ -15,22 +15,23 @@ class ViewController: UIViewController {
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var tipControl: UISegmentedControl!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tipControl.selectedSegmentIndex = Settings.tipIndex.get()
     }
 
     @IBAction func onTap(sender: UITapGestureRecognizer) {
         view.endEditing(true);
     }
 
+    @IBAction func onTipAmountChanged(sender: AnyObject) {
+        if (Settings.rememberTip.get()) {
+            Settings.tipIndex.set(tipControl.selectedSegmentIndex)
+        }
+    }
+
     @IBAction func calculateTip(sender: AnyObject) {
-        
         let tipPercentages = [0.18, 0.20, 0.25]
         let tipPercentage = tipPercentages[tipControl.selectedSegmentIndex]
         
