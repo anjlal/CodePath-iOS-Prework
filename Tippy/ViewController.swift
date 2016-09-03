@@ -25,6 +25,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var billView: UIView!
 
+    // FIXME: There must be a better way to do this without repetition...
+    @IBOutlet weak var splitTwoWaysLabel: UILabel!
+    @IBOutlet weak var splitThreeWaysLabel: UILabel!
+    @IBOutlet weak var splitFourWaysLabel: UILabel!
+
     private var billAmount = 0.0
     private var tipPercentage = 20.0
     
@@ -53,7 +58,9 @@ class ViewController: UIViewController {
     }
 
     @IBAction func onTap(sender: UITapGestureRecognizer) {
-        view.endEditing(true);
+        if hasEnteredBill() {
+            view.endEditing(true);
+        }
     }
 
     @IBAction func onPan(sender: UIPanGestureRecognizer) {
@@ -104,11 +111,11 @@ class ViewController: UIViewController {
     }
     
     private func updateDisplay() {
-        if billField.text == "" {
+        if hasEnteredBill() {
+            showBillDetails()
+        } else {
             billField.placeholder = localeSpecificCurrencySymbol()
             hideBillDetails()
-        } else {
-            showBillDetails()
         }
     }
     
@@ -193,6 +200,10 @@ class ViewController: UIViewController {
             totalLabel.text = dollarAmount(tip)
             totalLabel.textColor = UIColor.lightGrayColor()
         }
+        
+        splitTwoWaysLabel.text = dollarAmount(total * 0.5)
+        splitThreeWaysLabel.text = dollarAmount(total * 0.33)
+        splitFourWaysLabel.text = dollarAmount(total * 0.25)
     }
     
     private func localeSpecificCurrencySymbol() -> String {
@@ -210,6 +221,10 @@ class ViewController: UIViewController {
     
     private func dollarAmount(amount: Double) -> String {
         return NSNumberFormatter.localizedStringFromNumber(amount, numberStyle: .CurrencyStyle)
+    }
+    
+    private func hasEnteredBill() -> Bool {
+        return billField.text != ""
     }
     
     private func saveRecentlyEnteredBill() {
