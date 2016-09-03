@@ -27,6 +27,12 @@ class ViewController: UIViewController {
             billField.text = String(Settings.lastBillAmount.get())
         }
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        billField.becomeFirstResponder()
+    }
 
     @IBAction func onTap(sender: UITapGestureRecognizer) {
         view.endEditing(true);
