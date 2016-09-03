@@ -25,12 +25,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var billView: UIView!
 
-    private var billAmount: Double = 0.0
-    private var tipPercentage: Double = 20.0
+    private var billAmount = 0.0
+    private var tipPercentage = 20.0
+    
+    private var isDisplayingTotal = true
     
     private let billAmountCacheTimeout: NSTimeInterval = 60
-    private let minimumTip: Double = 10
-    private let maximumTip: Double = 30
+    private let minimumTip = 10.0
+    private let maximumTip = 30.0
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -44,8 +46,11 @@ class ViewController: UIViewController {
                 billField.text = String(format: "%.2f", billAmount)
             }
         }
+        
+        if (Settings.rememberTip.get()) {
+            tipPercentage = Settings.tipPercentage.get()
+        }
 
-        // TODO: update tip percent based on saved settings
         updateCurrencyLabels()
         updateDisplay()
     }
@@ -83,6 +88,11 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func onTapTotal(sender: AnyObject) {
+        isDisplayingTotal = !isDisplayingTotal
+        updateCurrencyLabels()
+    }
+
     @IBAction func calculateTip(sender: AnyObject) {
         billAmount = Double(billField.text!) ?? 0.0
         updateCurrencyLabels()
@@ -91,8 +101,7 @@ class ViewController: UIViewController {
     
     private func updateDisplay() {
         if billField.text == "" {
-            // TODO: use the proper placeholder for the currency
-            billField.placeholder = "$"
+            billField.placeholder = localeSpecificCurrencySymbol()
             hideBillDetails()
         } else {
             showBillDetails()
@@ -172,10 +181,22 @@ class ViewController: UIViewController {
         let total = billAmount + tip
         
         tipPercentLabel.text = String(format: "%.0lf%%", roundedTipPercentage)
-        totalLabel.text = dollarAmount(total)
+        
+        if isDisplayingTotal {
+            totalLabel.text = dollarAmount(total)
+            totalLabel.textColor = UIColor.blackColor()
+        } else {
+            totalLabel.text = dollarAmount(tip)
+            totalLabel.textColor = UIColor.lightGrayColor()
+        }
     }
     
-    func backgroundColorForTip() -> UIColor {
+    private func localeSpecificCurrencySymbol() -> String {
+        let symbol = NSLocale.currentLocale().objectForKey(NSLocaleCurrencySymbol)
+        return symbol as? String ?? ""
+    }
+    
+    private func backgroundColorForTip() -> UIColor {
         // We want magenta to go from [0 - 50]% to get a smooth green -> reddish
         let portionOfMaxTip = CGFloat((tipPercentage - minimumTip) / (maximumTip - minimumTip))
         let magenta = (1 - portionOfMaxTip) / 2
@@ -192,4 +213,3 @@ class ViewController: UIViewController {
         Settings.lastBillTimestamp.set(NSDate())
     }
 }
-

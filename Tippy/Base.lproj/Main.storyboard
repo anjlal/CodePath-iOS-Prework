@@ -46,6 +46,7 @@
                                 <nil key="highlightedColor"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="NJD-cu-4gt" appends="YES" id="Skb-Zf-L7W"/>
+                                    <outletCollection property="gestureRecognizers" destination="H8Q-gj-dYo" appends="YES" id="Doe-rF-tCA"/>
                                 </connections>
                             </label>
                         </subviews>
@@ -80,6 +81,11 @@
                         <action selector="onPan:" destination="BYZ-38-t0r" id="NDB-Cm-Axk"/>
                     </connections>
                 </panGestureRecognizer>
+                <tapGestureRecognizer id="H8Q-gj-dYo">
+                    <connections>
+                        <action selector="onTapTotal:" destination="BYZ-38-t0r" id="Uet-D6-Tts"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="758" y="366"/>
         </scene>
