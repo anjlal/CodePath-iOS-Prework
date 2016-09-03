@@ -15,17 +15,24 @@ class ViewController: UIViewController {
     @IBOutlet weak var billField: UITextField!
     @IBOutlet weak var tipControl: UISegmentedControl!
     
+    private var billAmount: Double = 0.0
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        tipControl.selectedSegmentIndex = Settings.tipIndex.get()
         
         let lastBillInput = Settings.lastBillTimestamp.get()
         let elapsedTimeSinceBillInput = NSDate().timeIntervalSinceDate(lastBillInput)
         
         if (elapsedTimeSinceBillInput < 60) {
-            billField.text = String(Settings.lastBillAmount.get())
+            billAmount = Settings.lastBillAmount.get()
+            if billAmount > 0 {
+                billField.text = String(format: "%.2f", billAmount)
+            }
         }
+        
+        tipControl.selectedSegmentIndex = Settings.tipIndex.get()
+        
+        updateCurrencyLabels()
     }
     
     override func viewDidLoad() {
@@ -46,23 +53,27 @@ class ViewController: UIViewController {
     }
 
     @IBAction func calculateTip(sender: AnyObject) {
+        billAmount = Double(billField.text!) ?? 0.0
+        updateCurrencyLabels()
+    }
+    
+    private func updateCurrencyLabels() {
         let tipPercentages = [0.18, 0.20, 0.25]
         let tipPercentage = tipPercentages[tipControl.selectedSegmentIndex]
         
-        let bill = getBillAmount()
-        let tip = bill * tipPercentage
-        let total = bill + tip
+        let tip = billAmount * tipPercentage
+        let total = billAmount + tip
         
-        tipLabel.text = String(format: "$%.2f", tip)
-        totalLabel.text = String(format: "$%.2f", total)
+        tipLabel.text = dollarAmount(tip)
+        totalLabel.text = dollarAmount(total)
     }
     
-    func getBillAmount() -> Double {
-        return Double(billField.text!) ?? 0.0
+    private func dollarAmount(amount: Double) -> String {
+        return NSNumberFormatter.localizedStringFromNumber(amount, numberStyle: .CurrencyStyle)
     }
     
-    func saveRecentlyEnteredBill() {
-        Settings.lastBillAmount.set(getBillAmount())
+    private func saveRecentlyEnteredBill() {
+        Settings.lastBillAmount.set(billAmount)
         Settings.lastBillTimestamp.set(NSDate())
     }
 }
