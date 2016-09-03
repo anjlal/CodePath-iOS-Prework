@@ -24,4 +24,8 @@ class SettingsViewController: UITableViewController {
             Settings.tipPercentage.remove()
         }
     }
+    
+    @IBAction func onDoneTapped(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: {})
+    }
 }

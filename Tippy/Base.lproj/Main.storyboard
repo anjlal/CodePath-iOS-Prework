@@ -33,6 +33,17 @@
                                             <action selector="onFinishEditing:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="jLq-Sb-4YD"/>
                                         </connections>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mfQ-nO-x8e">
+                                        <rect key="frame" x="274" y="26" width="31" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <state key="normal" title="⚙">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="Chb-ZK-yME" kind="modal" id="Eu5-nZ-eHr"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.66142920370000002" green="0.96987452649999994" blue="0.66792573919999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
@@ -57,11 +68,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Tippy" id="q8b-A1-SRM">
-                        <barButtonItem key="rightBarButtonItem" title="Settings" id="yhr-Xz-G1A">
-                            <connections>
-                                <segue destination="Fsh-fz-zPN" kind="push" id="YjS-dx-jHg"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Settings" id="yhr-Xz-G1A"/>
                     </navigationItem>
                     <connections>
                         <outlet property="billField" destination="BUA-kX-sHh" id="3AA-ro-wku"/>
@@ -87,7 +94,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="758" y="366"/>
+            <point key="canvasLocation" x="756" y="366"/>
         </scene>
         <!--Settings-->
         <scene sceneID="piZ-MA-yNJ">
@@ -101,7 +108,7 @@
                             <tableViewSection headerTitle="General" id="PKb-bb-Jy8">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8RW-c0-1aQ">
-                                        <rect key="frame" x="0.0" y="49.5" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8RW-c0-1aQ" id="qHk-89-n6r">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -132,12 +139,36 @@
                             <outlet property="delegate" destination="Fsh-fz-zPN" id="rnO-Ns-3g8"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Settings" id="PnG-Om-z9z"/>
+                    <navigationItem key="navigationItem" title="Settings" id="PnG-Om-z9z">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="xtz-K3-9mn">
+                            <connections>
+                                <action selector="onDoneTapped:" destination="Fsh-fz-zPN" id="96S-92-pK3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="rememberTipSwitch" destination="h68-oH-Yxf" id="ZHx-V4-t7t"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ogw-OQ-RDZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1876" y="366"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ecc-aN-Vnu">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Chb-ZK-yME" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NYd-Q7-L4X">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Fsh-fz-zPN" kind="relationship" relationship="rootViewController" id="1LD-xc-SJB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gAf-xU-AOF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1344" y="366"/>
         </scene>
