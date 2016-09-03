@@ -64,6 +64,25 @@ class ViewController: UIViewController {
         view.endEditing(true);
     }
 
+    @IBAction func onPan(sender: UIPanGestureRecognizer) {
+        let translation = sender.translationInView(totalLabel)
+        sender.setTranslation(CGPoint(x: 0, y: 0), inView: totalLabel)
+        
+        let range = maximumTip - minimumTip
+        let delta = Double(translation.x / totalLabel.frame.width) * range
+        
+        tipPercentage += delta
+        tipPercentage = min(tipPercentage, maximumTip)
+        tipPercentage = max(tipPercentage, minimumTip)
+        
+        billView.backgroundColor = backgroundColorForTip()
+        updateCurrencyLabels()
+        
+        if sender.state == .Ended {
+            Settings.tipPercentage.set(tipPercentage)
+        }
+    }
+
     @IBAction func calculateTip(sender: AnyObject) {
         billAmount = Double(billField.text!) ?? 0.0
         updateCurrencyLabels()

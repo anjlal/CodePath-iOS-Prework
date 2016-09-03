@@ -21,7 +21,7 @@ class SettingsViewController: UITableViewController {
     @IBAction func onRememberTipChanged(sender: AnyObject) {
         Settings.rememberTip.set(rememberTipSwitch.on)
         if (!rememberTipSwitch.on) {
-            Settings.tipIndex.remove()
+            Settings.tipPercentage.remove()
         }
     }
 }

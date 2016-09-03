@@ -10,7 +10,7 @@ import Foundation
 
 struct Settings {
     static let rememberTip = BoolProperty(key: "Tippy__rememberTip")
-    static let tipIndex = IntProperty(key: "Tippy__tipIndex")
+    static let tipPercentage = DoubleProperty(key: "Tippy__tipPercentage")
     static let lastBillAmount = DoubleProperty(key: "Tippy__lastBillAmount")
     static let lastBillTimestamp = DateProperty(key: "Tippy__lastBillTimestamp")
 }
@@ -38,20 +38,6 @@ class DoubleProperty: StoredProperty<Double> {
             },
             setter: { (defaults, key, value) -> () in
                 defaults.setDouble(value, forKey: key)
-            }
-        )
-    }
-}
-
-class IntProperty: StoredProperty<Int> {
-    init(key: String) {
-        super.init(
-            withKey: key,
-            getter: { (defaults, key) -> Int in
-                defaults.integerForKey(key)
-            },
-            setter: { (defaults, key, value) -> () in
-                defaults.setInteger(value, forKey: key)
             }
         )
     }
