@@ -37,20 +37,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        let lastBillInput = Settings.lastBillTimestamp.get()
-        let elapsedTimeSinceBillInput = NSDate().timeIntervalSinceDate(lastBillInput)
-        
-        if (elapsedTimeSinceBillInput < billAmountCacheTimeout) {
-            billAmount = Settings.lastBillAmount.get()
-            if billAmount > 0 {
-                billField.text = String(format: "%.2f", billAmount)
-            }
-        }
-        
-        if (Settings.rememberTip.get()) {
-            tipPercentage = Settings.tipPercentage.get()
-        }
-
+        initViewsWithSavedData()
         updateCurrencyLabels()
         updateDisplay()
     }
@@ -91,12 +78,29 @@ class ViewController: UIViewController {
     @IBAction func onTapTotal(sender: AnyObject) {
         isDisplayingTotal = !isDisplayingTotal
         updateCurrencyLabels()
+        saveRecentlyEnteredBill()
     }
 
     @IBAction func calculateTip(sender: AnyObject) {
         billAmount = Double(billField.text!) ?? 0.0
         updateCurrencyLabels()
         updateDisplay()
+    }
+    
+    private func initViewsWithSavedData() {
+        let lastBillInput = Settings.lastBillTimestamp.get()
+        let elapsedTimeSinceBillInput = NSDate().timeIntervalSinceDate(lastBillInput)
+        
+        if (elapsedTimeSinceBillInput < billAmountCacheTimeout) {
+            billAmount = Settings.lastBillAmount.get()
+            if billAmount > 0 {
+                billField.text = String(format: "%.2f", billAmount)
+            }
+        }
+        
+        if (Settings.rememberTip.get()) {
+            tipPercentage = Settings.tipPercentage.get()
+        }
     }
     
     private func updateDisplay() {
