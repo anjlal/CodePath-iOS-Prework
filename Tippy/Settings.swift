@@ -9,26 +9,36 @@
 import Foundation
 
 struct Settings {
-    static let rememberTip = StoredProperty<Bool>(
-        withKey: "Tippy__rememberTip",
-        getter: { (defaults, key) -> Bool in
-            defaults.boolForKey(key)
-        },
-        setter: { (defaults, key, value) in
-            defaults.setBool(value, forKey: key)
-        
-        }
-    )
-    
-    static let tipIndex = StoredProperty<Int>(
-        withKey: "Tippy__tipIndex",
-        getter: { (defaults, key) -> Int in
-            defaults.integerForKey(key)
-        },
-        setter: { (defaults, key, value) in
-            defaults.setInteger(value, forKey: key)
-        }
-    )
+    static let rememberTip = BoolProperty(key: "Tippy__rememberTip")
+    static let tipIndex = IntProperty(key: "Tippy__tipIndex")
+}
+
+class IntProperty: StoredProperty<Int> {
+    init(key: String) {
+        super.init(
+            withKey: key,
+            getter: { (defaults, key) -> Int in
+                defaults.integerForKey(key)
+            },
+            setter: { (defaults, key, value) -> () in
+                defaults.setInteger(value, forKey: key)
+            }
+        )
+    }
+}
+
+class BoolProperty: StoredProperty<Bool> {
+    init(key: String) {
+        super.init(
+            withKey: key,
+            getter: { (defaults, key) -> Bool in
+                defaults.boolForKey(key)
+            },
+            setter: { (defaults, key, value) -> () in
+                defaults.setBool(value, forKey: key)
+            }
+        )
+    }
 }
 
 class StoredProperty<T> {
