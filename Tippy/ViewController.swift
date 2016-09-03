@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     
     private var isDisplayingTotal = true
     
-    private let billAmountCacheTimeout: NSTimeInterval = 60
+    private let billAmountCacheTimeout: NSTimeInterval = 60 * 10
     private let minimumTip = 10.0
     private let maximumTip = 30.0
     
@@ -114,6 +114,7 @@ class ViewController: UIViewController {
         if hasEnteredBill() {
             showBillDetails()
         } else {
+            Settings.lastBillAmount.remove()
             billField.placeholder = localeSpecificCurrencySymbol()
             hideBillDetails()
         }
