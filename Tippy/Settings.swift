@@ -11,6 +11,36 @@ import Foundation
 struct Settings {
     static let rememberTip = BoolProperty(key: "Tippy__rememberTip")
     static let tipIndex = IntProperty(key: "Tippy__tipIndex")
+    static let lastBillAmount = DoubleProperty(key: "Tippy__lastBillAmount")
+    static let lastBillTimestamp = DateProperty(key: "Tippy__lastBillTimestamp")
+}
+
+class DateProperty: StoredProperty<NSDate> {
+    init(key: String) {
+        super.init(
+            withKey: key,
+            getter: { (defaults, key) -> NSDate in
+                (defaults.objectForKey(key) as? NSDate) ?? NSDate.distantPast()
+            },
+            setter: { (defaults, key, value) -> () in
+                defaults.setObject(value, forKey: key)
+            }
+        )
+    }
+}
+
+class DoubleProperty: StoredProperty<Double> {
+    init(key: String) {
+        super.init(
+            withKey: key,
+            getter: { (defaults, key) -> Double in
+                defaults.doubleForKey(key)
+            },
+            setter: { (defaults, key, value) -> () in
+                defaults.setDouble(value, forKey: key)
+            }
+        )
+    }
 }
 
 class IntProperty: StoredProperty<Int> {
